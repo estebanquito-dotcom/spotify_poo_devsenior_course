@@ -71,6 +71,8 @@ public class CuentaSpotify {
         }
     }
 
+
+
     public void reproducir (String playlist, int indexCancion) {
         if (sesionIniciada){
 
@@ -80,6 +82,29 @@ public class CuentaSpotify {
                     return;
                 }
             }
+        }
+    }
+
+    public void detenerReproduccion() {
+        if (sesionIniciada) {
+            System.out.println("Reproducción detenida.");
+        } else {
+            System.out.println("Debe iniciar sesión para detener la reproducción.");
+        }
+    }
+
+    public Playlist buscarPlaylist(String nombrePlaylist) {
+        if (sesionIniciada) {
+            for (int i = 0; i < contadorPlaylists; i++) {
+                if (playlists[i].getNombre().equals(nombrePlaylist)) {
+                    return playlists[i];
+                }
+            }
+            System.out.println("Playlist no encontrada.");
+            return null;
+        } else {
+            System.out.println("Debe iniciar sesión para buscar una playlist.");
+            return null;
         }
     }
 
@@ -98,7 +123,7 @@ public class CuentaSpotify {
 
     }
 
-        public Playlist[] getPlaylists() {
+    public Playlist[] getPlaylists() {
         return this.playlists;
     }
 

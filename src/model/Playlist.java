@@ -54,6 +54,8 @@ public class Playlist {
         }
     }
 
+
+
     public void agregarCancion(Cancion nuevacancion){
         if(contadorCanciones<maxCanciones){
             canciones[contadorCanciones]=nuevacancion;
@@ -67,6 +69,7 @@ public class Playlist {
     public boolean estaLlena(){
         return contadorCanciones>=maxCanciones;
     }
+
 
     
 }

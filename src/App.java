@@ -10,17 +10,11 @@ import model.Playlist;
 
 
 public class App {
+    //variable to store the user's choice in the menu
     static int opcion;
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
-        //variable to store the user's choice in the menu
-
-
         //object creation for testing the functionality of the program --start--
-
-        //scanner for user input
-        Scanner sc = new Scanner(System.in);
-
         //create an instance of CuentaSpotify
         CuentaSpotify cuenta = new CuentaSpotify("estebanquito", "password123", 100, 10);
         //test songs
@@ -35,6 +29,8 @@ public class App {
 
         //creating instances of the classes to test the functionality of the program
         Playlist playlist1 = new Playlist("Rock Clásico", 50);
+
+
         //adding songs to the playlist
         playlist1.agregarCancion(cancion1);
         playlist1.agregarCancion(cancion2);
@@ -48,15 +44,21 @@ public class App {
         biblioteca1.agregarCancion(cancion1);
         biblioteca1.agregarCancion(cancion2);
         biblioteca1.agregarCancion(cancion3);
+
         //associate biblioteca with the account
         cuenta.setbiblioteca(biblioteca1);
         //associate playlist with the account
-        cuenta.agregarPlaylist(playlist1);
+
+        //in this case i've been trying to implement addsong to playlist, but this method
+        //verify if the session is initiated, the problem here is, the session is not initiated
+        //from the start.
+
+        //cuenta.agregarPlaylist(playlist1);
 
         //object creation for testing the functionality of the program --end--
         
         
-
+        //loop to display the main menu.
         do {
                     //display main menu
             menuPrincipal();
@@ -66,12 +68,12 @@ public class App {
             sc.nextLine(); // Consume newline
 
             switch (opcion) {
-                case 1 -> iniciarSesion(cuenta, sc);
+                case 1 -> iniciarSesion(cuenta);
                 case 2 -> gestionarBibliotecaMusical(cuenta);
                 case 3 -> gestionarPlaylists(cuenta);
-                case 4 -> System.out.println("Reproducción de Canciones - en construcción");
+                case 4 -> menuReproduccion(cuenta);
                 case 5 -> cerrarSesion(cuenta);
-                case 6 -> System.out.println("Saliendo del programa...");
+                case 6 -> System.out.println("Saliendo del programa...\n¡Gracias por usar Mini-Spotify!");
                 default -> System.out.println("Opción no válida. Intente de nuevo.");
             }
 
@@ -80,7 +82,7 @@ public class App {
 
     }
 
-    //auxiliar menus.
+    //main menu.
     public static void menuPrincipal(){
 
         var opciones = """
@@ -95,17 +97,7 @@ public class App {
         System.out.println(opciones);
     }
 
-    public static void iniciarSesion(CuentaSpotify cuenta, Scanner sc) {
-        System.out.println("Ingrese su usuario:");
-        String usuario = sc.nextLine();
-        System.out.println("Ingrese su contraseña:");
-        String password = sc.nextLine();
-
-        cuenta.iniciarSesion(usuario, password);
-
-    }
-
-
+    //menus implemented on the main menu options.
     public static void gestionarBibliotecaMusical(CuentaSpotify cuenta){
         //i rather just check if sesion its false, otherwise the user will have access to
         // the menu, if the session is not initiated, it will show a message and return to the main menu
@@ -238,10 +230,65 @@ public class App {
         }
         System.out.println("Playlist no encontrada.");
     }
-
     
+    public static void menuReproduccion (CuentaSpotify cuenta){
+        var opcionesReproduccion = """
+                --- REPRODUCCIÓN ---
+            1. Reproducir canción desde playlist
+            2. Detener reproducción
+            3. Volver
+                    """;
+
+            System.out.println(opcionesReproduccion);
+                int opcionReproduccion = sc.nextInt();
+                sc.nextLine(); // Consume newline
+    
+                switch (opcionReproduccion) {
+                    case 1 -> reproducirCancionDesdePlaylist(cuenta);
+                    case 2 -> detenerReproduccion(cuenta);
+                    case 3 -> menuPrincipal();
+                    default -> System.out.println("Opción no válida.");
+                }
+    }
+
+    public static void reproducirCancionDesdePlaylist(CuentaSpotify cuenta){
+        System.out.println("Ingrese el nombre de la playlist:");
+        String nombrePlaylist = sc.nextLine();
+        System.out.println("canciones disponibles en la playlist:");
+        Playlist playlist = cuenta.buscarPlaylist(nombrePlaylist);
+        if (playlist != null) {
+            playlist.listarCanciones();
+        } else {
+            System.out.println("Playlist no encontrada.");
+        }
+        System.out.println("Ingrese el número de la canción a reproducir:");
+        int numeroCancion = sc.nextInt();
+        sc.nextLine(); // Consume newline
+        if (playlist != null) {
+            playlist.reproducirCancion(numeroCancion - 1); // Restamos 1 para ajustar al índice del array
+        } else {
+            System.out.println("Playlist no encontrada.");
+        }
+    }
+
+    public static void detenerReproduccion(CuentaSpotify cuenta) {
+        cuenta.detenerReproduccion();
+    }
+
+    //methods aboud session management
+    public static void iniciarSesion(CuentaSpotify cuenta) {
+        System.out.println("Ingrese su usuario:");
+        String usuario = sc.nextLine();
+        System.out.println("Ingrese su contraseña:");
+        String password = sc.nextLine();
+
+        cuenta.iniciarSesion(usuario, password);
+
+    }
 
     public static void cerrarSesion(CuentaSpotify cuenta){
         cuenta.cerrarSesion();
     }
+
+
 }
