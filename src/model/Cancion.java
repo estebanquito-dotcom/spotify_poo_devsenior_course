@@ -3,6 +3,7 @@ package model;
 public class Cancion extends Multimedia implements Reproducible {
 
     private String artista;
+    
 
     public Cancion(String titulo, int duracion, String artista) {
         super(titulo, duracion);
