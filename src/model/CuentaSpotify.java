@@ -37,6 +37,15 @@ public class CuentaSpotify {
         }
     }
 
+    public void cerrarSesion() {
+        if (sesionIniciada) {
+            sesionIniciada = false;
+            System.out.println("Sesión cerrada correctamente.");
+        } else {
+            System.out.println("No hay una sesión iniciada para cerrar.");
+        }
+    }
+
     public void agregarPlaylist(Playlist playlist) {
         if(sesionIniciada && contadorPlaylists < playlists.length) {
             playlists[contadorPlaylists] = playlist;
@@ -74,6 +83,8 @@ public class CuentaSpotify {
         }
     }
 
+
+
     public boolean getSesionIniciada() {
         return this.sesionIniciada;
     }
@@ -85,6 +96,14 @@ public class CuentaSpotify {
     public void setbiblioteca(BibliotecaMusical biblioteca) {
         this.biblioteca = biblioteca;
 
+    }
+
+        public Playlist[] getPlaylists() {
+        return this.playlists;
+    }
+
+    public void setPlaylists(Playlist[] playlists) {
+        this.playlists = playlists;
     }
 
 

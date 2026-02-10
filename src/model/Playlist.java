@@ -16,6 +16,13 @@ public class Playlist {
         this.contadorCanciones = 0;
     }
 
+        public Playlist(String nombre) {
+        this.nombre = nombre;
+        this.maxCanciones = 100; // Default max canciones
+        this.canciones = new Cancion[maxCanciones];
+        this.contadorCanciones = 0;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
